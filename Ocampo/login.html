@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactCheck AI - Sign In</title>
+    <link rel="stylesheet" href="loginstyle.css">
+</head>
+<body>
+
+    <div class="auth-container">
+        <form id="loginForm">
+            <h2>Sign In</h2>
+            <div class="input-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" placeholder="Enter your username" required autocomplete="username">
+            </div>
+            <div class="input-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                    <button type="button" class="toggle-password" id="toggleLoginPass">Show</button>
+                </div>
+            </div>
+            <button type="submit" class="btn">Authenticate</button>
+            <p class="toggle-text">
+                New to the platform? <a href="register.html">Register account</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Password Visibility Toggle Logic
+        const passwordInput = document.getElementById('loginPassword');
+        const toggleBtn = document.getElementById('toggleLoginPass');
+
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+        });
+
+        // Form Submission Redirect
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html';
+        });
+    </script>
+
+</body>
+</html>

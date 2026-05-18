@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactCheck AI - Create Account</title>
+    <link rel="stylesheet" href="loginstyle.css">
+</head>
+<body>
+
+    <div class="auth-container">
+        <form id="registerForm">
+            <h2>Create Account</h2>
+            <div class="input-group">
+                <label for="registerUsername">Username</label>
+                <input type="text" id="registerUsername" placeholder="Choose a username" required autocomplete="username">
+            </div>
+            <div class="input-group">
+                <label for="registerPassword">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="registerPassword" placeholder="Create a strong password" required autocomplete="new-password">
+                    <button type="button" class="toggle-password" id="toggleRegisterPass">Show</button>
+                </div>
+            </div>
+            <button type="submit" class="btn">Register</button>
+            <p class="toggle-text">
+                Already registered? <a href="login.html">Back to Sign In</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Password Visibility Toggle Logic
+        const passwordInput = document.getElementById('registerPassword');
+        const toggleBtn = document.getElementById('toggleRegisterPass');
+
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleBtn.textContent = isPassword ? 'Hide' : 'Show';
+        });
+
+        // Form Submission Redirect
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('registerUsername').value;
+            alert(`Account registered successfully for ${user}!`);
+            window.location.href = 'login.html';
+        });
+    </script>
+
+</body>
+</html>

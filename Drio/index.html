@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REYAL OR FAKE</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #1e1e24; color: #e2e8f0; }
+
+        /* Left Sidebar Layout */
+        .sidebar { width: 85px; background-color: #141417; display: flex; flex-direction: column; align-items: center; padding-top: 25px; border-right: 1px solid #2d2d34; }
+        .avatar { width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: bold; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3); }
+
+        /* Main Chat Window Frame */
+        .chat-container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 30px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(to right, #ffffff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: #71717a; font-size: 14px; margin-top: 4px; }
+
+        /* Chat History Box */
+        .chat-box { flex: 1; overflow-y: auto; padding-right: 8px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+        .chat-box::-webkit-scrollbar { width: 6px; }
+        .chat-box::-webkit-scrollbar-thumb { background-color: #2d2d34; border-radius: 3px; }
+
+        /* Chat Bubble Architecture */
+        .bubble { max-width: 75%; padding: 16px 20px; border-radius: 20px; font-size: 15px; line-height: 1.5; word-wrap: break-word; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .user-bubble { background-color: #2b2d31; color: #f4f4f5; align-self: flex-end; border-bottom-right-radius: 4px; border: 1px solid #3f4147; }
+        .ai-bubble { background-color: #22252a; color: #e4e4e7; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #2d3139; }
+        
+        /* Structured Data Display cards inside AI Response */
+        .meta-card { background: #181a1d; padding: 14px; border-radius: 12px; margin-top: 10px; border: 1px solid #282a2e; }
+        .meta-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #3b82f6; margin-bottom: 4px; font-weight: 700; }
+        
+        /* Status Highlighting tags */
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-left: 6px; }
+        .status-REAL { background-color: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .status-FAKE { background-color: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .status-UNVERIFIED { background-color: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+        /* Tags list mapping layout */
+        .tag-pill { display: inline-block; background: #27272a; padding: 2px 8px; border-radius: 6px; font-size: 12px; color: #a1a1aa; margin: 2px; }
+
+        /* Interactive Options Buttons */
+        .options-container { display: flex; gap: 10px; justify-content: center; margin: 15px 0; flex-wrap: wrap; }
+        .option-btn { background-color: #1e1e24; color: #a1a1aa; border: 1px solid #3f3f46; padding: 10px 18px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s ease; }
+        .option-btn:hover { background-color: #27272a; color: white; border-color: #71717a; transform: translateY(-1px); }
+
+        /* Bottom Entry Dashboard */
+        .input-area { display: flex; background-color: #141417; border-radius: 16px; padding: 8px 16px; align-items: center; border: 1px solid #2d2d34; transition: border-color 0.2s; }
+        .input-area:focus-within { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); }
+        .input-area input { flex: 1; background: none; border: none; padding: 10px; font-size: 15px; color: white; outline: none; }
+        .input-area input::placeholder { color: #52525b; }
+        
+        .send-btn { background-color: #3b82f6; color: white; border: none; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 13px; transition: background 0.2s; }
+        .send-btn:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="avatar">RF</div>
+    </div>
+
+    <div class="chat-container">
+        <div class="header">
+            <h1>REYAL OR FAKE</h1>
+            <p>Live Web Context & Authenticity Engine</p>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="bubble ai-bubble">Mabuhay! Drop any active news link below. I will fetch the live context data, isolate core statements, and run safety verifications.</div>
+        </div>
+
+        <div class="options-container" id="optionsContainer"></div>
+
+        <div class="input-area" id="inputWrapper">
+            <input type="text" id="urlInput" placeholder="Paste article link here...">
+            <button class="send-btn" onclick="submitLink()">Analyze</button>
+        </div>
+    </div>
+
+<script>
+    let activeData = null;
+
+    function appendBubble(text, isUser) {
+        const chatBox = document.getElementById('chatBox');
+        const bubble = document.createElement('div');
+        bubble.className = `bubble ${isUser ? 'user-bubble' : 'ai-bubble'}`;
+        bubble.innerHTML = text;
+        chatBox.appendChild(bubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function submitLink() {
+        const urlInput = document.getElementById('urlInput');
+        const urlValue = urlInput.value.trim();
+        if(!urlValue) return;
+
+        appendBubble(urlValue, true);
+        urlInput.value = '';
+
+        document.getElementById('inputWrapper').style.opacity = '0.5';
+        urlInput.disabled = true;
+
+        try {
+            // REPLACE THIS BACKEND URL WITH YOUR LIVE PORT FORWARD TUNNEL LINK IF NEEDED
+            const response = await fetch('https://musical-adventure-7v5j74wxr6pjfxjvq-5000.app.github.dev/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: urlValue })
+            });
+            
+            activeData = await response.json();
+
+            if(activeData.error) {
+                appendBubble(`❌ Error: ${activeData.error}`, false);
+                resetInputBar();
+                return;
+            }
+
+            let tagsHtml = activeData.keywords.map(t => `<span class="tag-pill">#${t}</span>`).join('');
+
+            const initialReply = `
+                <strong>Analysis Conclusion:</strong> <span class="status-badge status-${activeData.prediction}">${activeData.prediction}</span><br><br>
+                <strong>Evaluation Rule:</strong> ${activeData.reason}
+                
+                <div class="meta-card" style="border-left: 3px solid #3b82f6;">
+                    <div class="meta-title">Discrete Structures Proof Matrix</div>
+                    <pre style="font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #34d399; background: #0f1012; padding: 12px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; line-height: 1.4;">${activeData.proof}</pre>
+                </div>
+
+                <div class="meta-card">
+                    <div class="meta-title">Extracted Article Title</div>
+                    <div style="color:#fafafa; font-weight:600; font-size:14px; margin-top:2px;">${activeData.title}</div>
+                </div>
+            `;
+            appendBubble(initialReply, false);
+            showInteractionMenu();
+
+        } catch (error) {
+            appendBubble("⚠️ Backend connection lost. Ensure your Flask server is running and port 5000 visibility is set to Public.", false);
+            resetInputBar();
+        }
+    }
+
+    function showInteractionMenu() {
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = `
+            <button class="option-btn" onclick="triggerMenuAction('summary')">📖 Show Full Article Summary</button>
+            <button class="option-btn" onclick="triggerMenuAction('details')">🔍 Show Source Deep-Dive</button>
+            <button class="option-btn" onclick="resetChatFlow()">✨ Verify Another URL</button>
+        `;
+    }
+
+    function triggerMenuAction(actionType) {
+        if(!activeData) return;
+        if (actionType === 'summary') {
+            appendBubble("Generate the complete article context summary.", true);
+            setTimeout(() => {
+                appendBubble(`<strong>Context Summary:</strong><br><span style="color: #d4d4d8;">${activeData.summary}</span>`, false);
+            }, 300);
+        } else if (actionType === 'details') {
+            appendBubble("Show source background metrics.", true);
+            setTimeout(() => {
+                appendBubble(`<strong>Source Deep-Dive Data:</strong><br><pre style="font-family:monospace; background:#141417; padding:10px; border-radius:8px; margin-top:5px; color:#a1a1aa; white-space:pre-wrap;">${activeData.more_info}</pre>`, false);
+            }, 300);
+        }
+    }
+
+    function resetInputBar() {
+        const urlInput = document.getElementById('urlInput');
+        document.getElementById('inputWrapper').style.opacity = '1';
+        urlInput.disabled = false;
+    }
+
+    function resetChatFlow() {
+        document.getElementById('optionsContainer').innerHTML = '';
+        resetInputBar();
+        appendBubble("Awaiting new source tracking data. Drop your next link below.", false);
+    }
+</script>
+</body>
+</html>

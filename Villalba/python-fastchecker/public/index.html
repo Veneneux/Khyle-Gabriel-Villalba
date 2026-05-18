@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactCheck AI - Live Platform</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- External CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo">A</div>
+                <h1 class="title">FACTCHECK AI <span class="subtitle">| Live Framework Evaluation</span></h1>
+            </div>
+            <div class="header-right">
+                <!-- API Key Input Box -->  
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span class="live-engine">LIVE ENGINE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Workspace -->
+        <div class="workspace">
+            <!-- Chat Box Interface -->
+            <main class="chat-area">
+                <div class="messages" id="chat-wrapper">
+                    <!-- Default System Welcome -->
+                    <div class="message ai-message">
+                        <div class="ai-avatar">A</div>
+                        <div class="bubble solid-bubble">
+                            <div class="bubble-header">SYSTEM READY</div>
+                            <div class="verdict-box">Please paste your Google AI Studio API Key in the top right corner, then drop an article description or claim down below to analyze it live.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Row Form -->
+                <form id="chat-form" class="input-container">
+                    <input type="text" id="user-input" class="chat-input" placeholder="Paste article content, claim, or text here..." autocomplete="off" required>
+                    <button type="submit" class="send-btn">Analyze</button>
+                </form>
+            </main>
+
+            <!-- Sidebar Panel Status -->
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="active"><span class="dot"></span> Client Scraper Interface</li>
+                    <li>Direct Gemini Integration</li>
+                    <li class="sidebar-heading">Evaluation Parameters</li>
+                    <li class="parameter-item">1. Sensationalism Index</li>
+                    <li class="parameter-item">2. Source Verification</li>
+                    <li class="parameter-item">3. Factual Framework</li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+    
+    <script type="importmap">
+    {
+        "imports": {
+        "@google/genai": "https://esm.run/@google/genai"
+        }
+    }
+    </script>
+
+    <!-- Your external JavaScript link (Notice type="module" is required now) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
