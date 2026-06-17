@@ -105,7 +105,6 @@
         urlInput.disabled = true;
 
         try {
-            // REPLACE THIS BACKEND URL WITH YOUR LIVE PORT FORWARD TUNNEL LINK IF NEEDED
             const response = await fetch('https://musical-adventure-7v5j74wxr6pjfxjvq-5000.app.github.dev/verify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -113,34 +112,33 @@
             });
             
             activeData = await response.json();
+            console.log("DEBUG: Data received:", activeData);
 
-            if(activeData.error) {
-                appendBubble(`❌ Error: ${activeData.error}`, false);
-                resetInputBar();
-                return;
-            }
-
-            let tagsHtml = activeData.keywords.map(t => `<span class="tag-pill">#${t}</span>`).join('');
+            // Null-safe rendering using logical OR (||) defaults
+            const prediction = activeData.prediction || "UNKNOWN";
+            const reason = activeData.reason || "No evaluation provided.";
+            const proof = activeData.proof || "No proof matrix generated.";
+            const title = activeData.title || "Untitled";
 
             const initialReply = `
-                <strong>Analysis Conclusion:</strong> <span class="status-badge status-${activeData.prediction}">${activeData.prediction}</span><br><br>
-                <strong>Evaluation Rule:</strong> ${activeData.reason}
+                <strong>Analysis Conclusion:</strong> <span class="status-badge status-${prediction}">${prediction}</span><br><br>
+                <strong>Evaluation Rule:</strong> ${reason}
                 
                 <div class="meta-card" style="border-left: 3px solid #3b82f6;">
                     <div class="meta-title">Discrete Structures Proof Matrix</div>
-                    <pre style="font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #34d399; background: #0f1012; padding: 12px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; line-height: 1.4;">${activeData.proof}</pre>
+                    <pre style="font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #34d399; background: #0f1012; padding: 12px; border-radius: 8px; margin-top: 8px; white-space: pre-wrap; line-height: 1.4;">${proof}</pre>
                 </div>
 
                 <div class="meta-card">
                     <div class="meta-title">Extracted Article Title</div>
-                    <div style="color:#fafafa; font-weight:600; font-size:14px; margin-top:2px;">${activeData.title}</div>
+                    <div style="color:#fafafa; font-weight:600; font-size:14px; margin-top:2px;">${title}</div>
                 </div>
             `;
             appendBubble(initialReply, false);
             showInteractionMenu();
 
         } catch (error) {
-            appendBubble("⚠️ Backend connection lost. Ensure your Flask server is running and port 5000 visibility is set to Public.", false);
+            appendBubble("⚠️ Backend connection lost. Ensure your server is running.", false);
             resetInputBar();
         }
     }
@@ -159,12 +157,14 @@
         if (actionType === 'summary') {
             appendBubble("Generate the complete article context summary.", true);
             setTimeout(() => {
-                appendBubble(`<strong>Context Summary:</strong><br><span style="color: #d4d4d8;">${activeData.summary}</span>`, false);
+                appendBubble(`<strong>Context Summary:</strong><br><span style="color: #d4d4d8;">${activeData.summary || 'Summary unavailable.'}</span>`, false);
             }, 300);
         } else if (actionType === 'details') {
             appendBubble("Show source background metrics.", true);
             setTimeout(() => {
-                appendBubble(`<strong>Source Deep-Dive Data:</strong><br><pre style="font-family:monospace; background:#141417; padding:10px; border-radius:8px; margin-top:5px; color:#a1a1aa; white-space:pre-wrap;">${activeData.more_info}</pre>`, false);
+                // Using activeData.more_info which is now correctly sent by the backend
+                const deepDive = activeData.more_info || "No deep-dive data available.";
+                appendBubble(`<strong>Source Deep-Dive Data:</strong><br><pre style="font-family:monospace; background:#141417; padding:10px; border-radius:8px; margin-top:5px; color:#a1a1aa; white-space:pre-wrap;">${deepDive}</pre>`, false);
             }, 300);
         }
     }
